@@ -1,0 +1,15 @@
+body {
+    background-color: darkgray;
+}
+
+#wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas{
+    background-color: whitesmoke;
+    width: 75%;
+    border: 5px solid black;
+}
