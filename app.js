@@ -67,7 +67,10 @@ const play = () => {
   )) {
     delta_ball_y = -delta_ball_y;
   } else if (ball_y + delta_ball_y > canvas.height) {
-    location.reload();
+    ctx.font = '20px arial';
+    ctx.fillStyle = 'black';
+    ctx.fillText("GAME OVER", 80, canvas.height / 2);
+    return;
   }
 
   //move the paddle, validate borders
