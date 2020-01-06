@@ -17,28 +17,37 @@ let rightKeyPressed;
 let leftKeyPressed;
 
 const drawBall = () => {
-  ctx.beginPath();
-  ctx.arc(ball_x, ball_y, ballRadius, 0, Math.PI * 2);
-  ctx.fillStyle = 'pink';
-  ctx.fill();
-  ctx.closePath();
+    ctx.beginPath();
+    ctx.arc(ball_x, ball_y, ballRadius, 0, Math.PI * 2);
+    ctx.fillStyle = 'pink';
+    ctx.fill();
+    ctx.closePath();
 };
 
 const drawPaddle = () => {
-  ctx.beginPath();
-  ctx.rect(paddle_x, paddle_y, paddleWidth, paddleHeight);
-  ctx.fillStyle = 'aquamarine';
-  ctx.fill();
-  ctx.closePath();
+    ctx.beginPath();
+    ctx.rect(paddle_x, paddle_y, paddleWidth, paddleHeight);
+    ctx.fillStyle = 'aquamarine';
+    ctx.fill();
+    ctx.closePath();
 };
+
 
 // paddle movement event listeners
 const keyUpdHandler = (e) => {
-  if (e.keyCode === 39) { rightKeyPressed = false; } else if (e.keyCode === 37) { leftKeyPressed = false; }
+    if (e.keyCode === 39) {
+        rightKeyPressed = false;
+    } else if (e.keyCode === 37) {
+        leftKeyPressed = false;
+    }
 };
 
 const keyDownHandler = (e) => {
-  if (e.keyCode === 39) { rightKeyPressed = true; } else if (e.keyCode === 37) { leftKeyPressed = true; }
+    if (e.keyCode === 39) {
+        rightKeyPressed = true;
+    } else if (e.keyCode === 37) {
+        leftKeyPressed = true;
+    }
 };
 
 document.addEventListener('keyup', keyUpdHandler, false);
@@ -46,49 +55,50 @@ document.addEventListener('keydown', keyDownHandler, false);
 
 const play = () => {
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  drawBall();
-  drawPaddle();
+    drawBall();
+    drawPaddle();
 
-  // check if the ball does hit the canvas border or paddle
-  // last loop captures game over scenario
-  if (ball_x + delta_ball_x > canvas.width - ballRadius || ball_x + delta_ball_x <
-      ballRadius) { delta_ball_x = -delta_ball_x; }
+    // check if the ball does hit the canvas border or paddle
+    // last loop captures game over scenario
+    if (ball_x + delta_ball_x > canvas.width - ballRadius || ball_x + delta_ball_x < ballRadius) {
+        delta_ball_x = -delta_ball_x;
+    }
 
-  if (ball_y + delta_ball_y < ballRadius) {
-    delta_ball_y = -delta_ball_y;
-  }
+    if (ball_y + delta_ball_y < ballRadius) {
+        delta_ball_y = -delta_ball_y;
+    }
 
-  if (ball_y + delta_ball_y < ballRadius || (
-      ball_x + delta_ball_y > canvas.height - paddleHeight - ballRadius &&
-      ball_x + delta_ball_x > paddle_x &&
-      ball_x + delta_ball_x < paddle_x + paddleWidth
-  )) {
-    delta_ball_y = -delta_ball_y;
-  } else if (ball_y + delta_ball_y > canvas.height) {
-    ctx.font = '20px arial';
-    ctx.fillStyle = 'black';
-    ctx.fillText("GAME OVER", 80, canvas.height / 2);
-    return;
-  }
+    if (ball_y + delta_ball_y < ballRadius || (
+        ball_y + delta_ball_y > canvas.height - paddleHeight - ballRadius &&
+        ball_x + delta_ball_x > paddle_x &&
+        ball_x + delta_ball_x < paddle_x + paddleWidth
+    )) {
+        delta_ball_y = -delta_ball_y;
+    } else if (ball_y + delta_ball_y > canvas.height) {
+        ctx.font = '20px arial';
+        ctx.fillStyle = 'black';
+        ctx.fillText("GAME OVER", 80, canvas.height / 2);
+        return;
+    }
 
-  //move the paddle, validate borders
-  if (rightKeyPressed && (paddle_x + paddleWidth) < canvas.width) {
-    paddle_x += delta_paddle_x;
-  } else if (leftKeyPressed && paddle_x > 0) {
-    paddle_x -= delta_paddle_x;
-  }
+    //move the paddle, validate borders
+    if (rightKeyPressed && (paddle_x + paddleWidth) < canvas.width) {
+        paddle_x += delta_paddle_x;
+    } else if (leftKeyPressed && paddle_x > 0) {
+        paddle_x -= delta_paddle_x;
+    }
 
-  // move the ball
-  ball_x += delta_ball_x;
-  ball_y += delta_ball_y;
+    // move the ball
+    ball_x += delta_ball_x;
+    ball_y += delta_ball_y;
 
-  requestAnimationFrame(play);
+    requestAnimationFrame(play);
 };
 
 // creates game loop
-// takes a function as argument and fires it, 
+// takes a function as argument and fires it,
 // whenever is browser ready to update next time.
 // fires only once, so callback calls it again.
 requestAnimationFrame(play);
